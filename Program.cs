@@ -123,15 +123,11 @@ app.MapGet("/ask", async (
     RagService ragService,
     CancellationToken cancellationToken) =>
 {
-    var answer = await ragService.AskAsync(
+    var result = await ragService.AskAsync(
         q,
         cancellationToken);
 
-    return Results.Ok(new
-    {
-        Question = q,
-        Answer = answer
-    });
+    return Results.Ok(result);
 });
 
 app.Run();
