@@ -7,6 +7,7 @@ public sealed class OllamaEmbeddingService(HttpClient httpClient) : IEmbeddingSe
         var request = new
         {
             model = "nomic-embed-text",
+            //model = "bge-m3",
             input = text
         };
 

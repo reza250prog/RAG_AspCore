@@ -33,22 +33,27 @@ public sealed class RagService(SemanticSearchService searchService,
                 """));
 
         var prompt =
-            $"""
-            You are a helpful assistant.
+                         $"""
+                 You are a question-answering assistant.
 
-            Answer the user's question using ONLY the provided context.
+                 Answer the user's question based ONLY on the context below.
 
-            If the answer cannot be found in the context,
-            say that you don't have enough information.
+                 Rules:
+                 - Use the context to answer the question directly.
+                 - Do not simply repeat or rephrase the user's question.
+                 - If the context contains the answer, explain it clearly.
+                 - If the context does not contain enough information, say:
+                   "I don't have enough information to answer this question."
+                 - Do not use outside knowledge.
 
-            Do not use outside knowledge.
+                 Question:
+                 {question}
 
-            User question:
-            {question}
+                 Context:
+                 {context}
 
-            Context:
-            {context}
-            """;
+                 Answer:
+                 """;
 
         var answer =
             await chatService.GenerateAsync(
