@@ -11,7 +11,7 @@ public sealed class RagService(SemanticSearchService searchService,
             await searchService.SearchAsync(
                 question,
                 topK: 3,
-                minimumScore: 0.70f,
+                minimumScore: 0.50f,
                 cancellationToken: cancellationToken);
 
         if (results.Count == 0)

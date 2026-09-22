@@ -39,7 +39,7 @@ var articles = new List<Article>
     {
         Id = 1,
         Title = "Redis Caching",
-        Description = "Using Redis as an in-memory distributed cache to improve application performance, reduce database load, and provide fast access to frequently requested data."
+        Description = "Using Redis as an in-memory distributed cache to improve application\r\nperformance, reduce database load, and provide fast access to frequently\r\nrequested data. Caching is especially useful for data that is requested\r\nrepeatedly and does not change frequently, allowing applications to avoid\r\nunnecessary database queries."
     },
     new()
     {
@@ -93,7 +93,7 @@ var articles = new List<Article>
     {
         Id = 10,
         Title = "API Optimization with React Query",
-        Description = "Managing server state in React applications with features such as client-side caching, background refetching, request deduplication, synchronization, and automatic handling of loading and error states."
+        Description = "React Query is a library for managing server state in React applications.\r\nIt provides client-side caching, background refetching,\r\nrequest deduplication, synchronization, and automatic handling\r\nof loading and error states."
     }
 };
 
@@ -129,18 +129,11 @@ app.MapGet("/search", async (
     SemanticSearchService searchService,
     CancellationToken cancellationToken) =>
 {
-    //var results =
-    //    await searchService.SearchAsync(
-    //        q,
-    //        topK: 3,
-    //        minimumScore: 0.70f,
-    //        cancellationToken: cancellationToken);
-
     var results =
     await searchService.SearchAsync(
         q,
         topK: 10,
-        minimumScore: 0.0f,
+        minimumScore: 0.50f,
         cancellationToken: cancellationToken);
 
     return Results.Ok(
