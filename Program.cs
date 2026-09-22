@@ -1,3 +1,4 @@
+using SemanticSearch.Evaluation;
 using SemanticSearch.Models;
 using SemanticSearch.Services;
 
@@ -23,6 +24,7 @@ builder.Services.AddSingleton<InMemoryArticleRepository>();
 builder.Services.AddScoped<SemanticSearchService>();
 builder.Services.AddScoped<ArticleEmbeddingInitializer>();
 builder.Services.AddScoped<RagService>();
+builder.Services.AddScoped<RetrievalEvaluator>();
 
 var app = builder.Build();
 
@@ -69,13 +71,13 @@ var articles = new List<Article>
     {
         Id = 6,
         Title = "Clean Architecture",
-        Description = "Structuring applications so that business logic remains independent from frameworks, databases, and external infrastructure, making the system easier to test, maintain, and evolve."
+        Description = "Clean Architecture is an application architecture pattern that organizes software into separate layers such as domain, application, infrastructure, and presentation. Business rules remain independent from frameworks, databases, UI, and external systems, with dependencies pointing inward toward the core business logic. This separation improves testability, maintainability, and the ability to change infrastructure without changing business rules."
     },
     new()
     {
         Id = 7,
         Title = "Distributed Transactions",
-        Description = "Handling data consistency across multiple microservices without relying on traditional distributed transactions by using patterns such as Saga and Transactional Outbox."
+        Description = "Distributed transactions coordinate a business operation that spans multiple independent databases or services. They help maintain consistency when a single operation must update data across distributed systems. Common approaches include the Saga pattern, compensating actions, and reliable messaging instead of relying on a single ACID transaction across services."
     },
     new()
     {
@@ -87,7 +89,7 @@ var articles = new List<Article>
     {
         Id = 9,
         Title = "Observability and Distributed Tracing",
-        Description = "Monitoring and troubleshooting distributed applications using logs, metrics, traces, and tools such as OpenTelemetry, Jaeger, Prometheus, and Grafana."
+        Description = "Observability helps understand the internal behavior of distributed applications by collecting logs, metrics, and traces. Distributed tracing follows a request as it travels across multiple services, making it easier to identify latency, failures, and bottlenecks in microservice architectures."
     },
     new()
     {
@@ -157,5 +159,22 @@ app.MapGet("/ask", async (
 
     return Results.Ok(result);
 });
+
+app.MapGet(
+    "/evaluation/retrieval",
+    async (
+        RetrievalEvaluator evaluator,
+        CancellationToken cancellationToken) =>
+    {
+        var results = await evaluator.EvaluateAsync(cancellationToken);
+
+        var summary = evaluator.Summarize(results);
+
+        return Results.Ok(new
+        {
+            Summary = summary,
+            Results = results
+        });
+    });
 
 app.Run();

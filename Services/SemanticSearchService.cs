@@ -28,25 +28,6 @@ public sealed class SemanticSearchService(IEmbeddingService embeddingService, In
         result.Rank = index + 1;
         return result;
     })];
-
-
-        //return [.. repository
-        //    .GetAll()
-        //    .Select(article => new SearchResult
-        //    {
-        //        Article = article,
-        //        Score = CosineSimilarity(
-        //            queryEmbedding,
-        //             article.Embedding)
-        //    })
-        //    .Where(x => x.Score >= minimumScore)
-        //    .OrderByDescending(x => x.Score)
-        //    .Take(topK)
-        //    .Select((result, index) =>
-        //    {
-        //        result.Rank = index + 1;
-        //        return result;
-        //    })];
     }
 
     private static float CosineSimilarity(
